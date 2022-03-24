@@ -1,8 +1,6 @@
 """
 Toy FTP Server
 """
-from ast import match_case
-import re
 from socket import *
 
 # DEFAULT_SERVER_IPV4 = '192.168.0.12'
@@ -22,7 +20,7 @@ while True:
     
     connectionSocket, addr = serverSocket.accept()
     request = connectionSocket.recv(1024).decode()
-    
+    # fetch opcode from request message
     if request == 'Gabriel':
         reply = "Student"
         connectionSocket.send(reply.encode())
