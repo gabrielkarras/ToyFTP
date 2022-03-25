@@ -1,6 +1,7 @@
 """
 Toy FTP Server
 """
+import re
 from socket import *
 
 DEFAULT_SERVER_IPV4 = '192.168.0.12'
@@ -35,12 +36,23 @@ def main():
 
         print('Request content from client')
         print(request)
+        
+        opcode = request[0:3]
 
-        if Hello in request:
+        if '000' in opcode:
+            print('put')
+        
+        if '001' in opcode:
+            print('get')
+
+        if '010' in opcode:
+            print('change')
+
+        if '011' in opcode:
             reply = 'success'
             connectionSocket.send(reply.encode())
         
-        if Bye in request:
+        if '100' in opcode:
             reply = "ok"
             connectionSocket.send(reply.encode())
             print("Server is closing down!")
