@@ -15,5 +15,6 @@ A simplified FTP command line application
 - get: Retrieve a file from server'
 - change: Change file name from server'
 - bye: Closes ToyFTP connection with server'
+- --help: to receive further information for a command
 
 ## Example
