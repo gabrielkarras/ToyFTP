@@ -1,11 +1,12 @@
 """
-Toy FTP Client
+Toy FTP Client Script
 
 Author: Gabriel Karras
 """
 from socket import *
-import os
 import click
+import os
+import re
 
 
 DEFAULT_SERVER_IPV4 = '192.168.0.12' # Defines default server IP
@@ -130,8 +131,10 @@ def test(config):
 def put(config, file):
     """
     Transfer a file to server
+
     \b
     [command] [arg1]
+
     put        file    
 
     \b
@@ -146,9 +149,11 @@ def put(config, file):
         file_size = str(get_size(file))
         header = opcode + ',' + filename_length + ',' + file_name + ',' + file_size    
 
-        data = open(file, 'r').read()
+        fileData = open(file, 'r').read()
+        listData = list(fileData)
+        filteredData = filter(lambda char: char not in ",", listData)
+        data =  "".join(list(filteredData))
         request = header + ',' + data
-        data.close()
         
         response = send_request(request)
         response_handler(response)
@@ -166,6 +171,7 @@ def get(config, file):
     
     \b
     [command] [arg1]
+
     get        file    
 
     \b
@@ -199,6 +205,7 @@ def change(config, oldfile, newfile):
 
     \b
     [command] [ arg1 ] [ arg2 ]
+
     get       oldfile  newfile
 
     \b

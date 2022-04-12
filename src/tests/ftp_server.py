@@ -1,10 +1,12 @@
 """
-Toy FTP Server
+Toy FTP Server Script
 
 Author: Gabriel Karras
 """
+from fileinput import filename
 from socket import *
 import os
+import re
 
 DEFAULT_SERVER_IPV4 = '192.168.0.12'
 DEFAULT_SERVER_PORT = 12000
@@ -53,12 +55,13 @@ def main():
 
         if '000' in opcode:
             # put request
+            
             fileNameLength = request_fields[1]
             fileName = request_fields[2]
             fileSize = request_fields[3]
             filePayload = request_fields[4]
 
-            if (fileSize < FILE_SIZE_LIMIT and fileNameLength < FILE_NAME_LIMIT):
+            if (int(fileSize) < FILE_SIZE_LIMIT and int(fileNameLength) < FILE_NAME_LIMIT):
                 if ( not os.path.exists(fileName) ):
                     with open(fileName, "w") as f:
                         f.write(filePayload)
@@ -78,20 +81,24 @@ def main():
             fileNameLength = request_fields[1]
             fileName = request_fields[2]
             
-            if fileNameLength < FILE_NAME_LIMIT:
+            if int(fileNameLength) < FILE_NAME_LIMIT:
                 try:    
-                    file_data = open(fileName, 'r').read()
+                    data = open(fileName, 'r').read()
+                    listData = list(data)
+                    filteredData = filter(lambda char: char not in ",", listData)
+                    file_data =  "".join(list(filteredData))
 
                     reply_opcode = "001"
+                    reply_file_name = fileName
                     reply_file_name_length = str(len(fileName))
-                    reply_file_size = str(get_size(file_data))
+                    reply_file_size = str(get_size(fileName))
 
-                    reply = reply_opcode + ',' + reply_file_name_length + ',' + reply_file_size + ',' + file_data
+                    reply = reply_opcode + ',' + reply_file_name_length + ',' + reply_file_name + ',' + reply_file_size + ',' + file_data
                     connectionSocket.send(reply.encode())
                 except (OSError, IOError) as e:
                     reply = "010" # File not found
                     connectionSocket.send(reply.encode())
-                    print("Error during get request:" + e)
+                    print(e)
             else:
                 print("File exceeds character limit")
                 reply = "010" 
@@ -104,7 +111,7 @@ def main():
             newFileNameLength = request_fields[3]
             newFileName = request_fields[4]
 
-            if (oldFileNameLength < FILE_NAME_LIMIT and newFileNameLength < FILE_NAME_LIMIT):
+            if (int(oldFileNameLength) < FILE_NAME_LIMIT and int(newFileNameLength) < FILE_NAME_LIMIT):
                 os.rename(oldFileName, newFileName)
                 reply = "000"
                 connectionSocket.send(reply.encode())
