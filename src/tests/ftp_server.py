@@ -8,8 +8,8 @@ from socket import *
 import os
 import re
 
-DEFAULT_SERVER_IPV4 = '192.168.0.12'
-DEFAULT_SERVER_PORT = 12000
+DEFAULT_SERVER_IPV4 = '10.0.0.1' # You can modify this value
+DEFAULT_SERVER_PORT = 12000      # You can modify this value
 
 FILE_NAME_LIMIT = 32 # file name with less than 32 characters in total
 FILE_SIZE_LIMIT = 536870912 # specified by 4 bytes/2^32 bits/ 2^29 bytes

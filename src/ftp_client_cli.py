@@ -9,8 +9,8 @@ import os
 import re
 
 
-DEFAULT_SERVER_IPV4 = '192.168.0.12' # Defines default server IP
-DEFAULT_SERVER_PORT = 12000          # Defines default server port
+DEFAULT_SERVER_IPV4 = '192.168.0.12' # You can change this value. MUST BE SERVER IP 
+DEFAULT_SERVER_PORT = 12000          # You can change this value. Must be the port that server is listening
 
 CHARACTER_LIMIT = 32 # Defines character limit of 32
 
@@ -35,6 +35,10 @@ pass_config = click.make_pass_decorator(Config, ensure=True)
 @pass_config
 def cli(config, ip, port, debug, file_dir):
     config.obj = Config(ip, port, debug, file_dir)
+    config.ipv4 = ip
+    config.port = port
+    config.file_directory = file_dir
+    config.debug = debug
 
 
 @pass_config
