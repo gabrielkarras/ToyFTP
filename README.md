@@ -4,10 +4,11 @@ A simplified FTP command line application
 
 ## Setup
 
-- ensure you have Python 3(recommended version 3.9+)
+- ensure you have Python 3(recommended version 3.8+) and pip
 - git clone https://github.com/gabrielkarras/ToyFTP.git
 - activate Python virtual environment(optional, but recommended)
   - The command depends on your OS and terminal environment
+  - ex: $python3 -m venv "your_venv_directory" (Bash)
 - pip install --editable .
 
 ## Commands
@@ -17,13 +18,16 @@ A simplified FTP command line application
 - get: Retrieve a file from server
 - change: Change file name from server
 - bye: Closes ToyFTP connection with server
-- --help: to receive further information for a command
+- --help: to receive further information and can also be appended to any command
+
+## Note(s)
+
+- If you wish, you may enter your IP address and port number in lines 11-12 of ftp_server.py and lines 12-13 of ftp_client_cli.py. This will avoid the need to add the arguments --ip and --port
+- You may test this with Mininet, where a host of choice can run the server script, while another host can make requests to the server.
+- Tested on Windows 10 and on Ubuntu 20.04.4
+- The IP address in the examples below is based off of the Mininet's generated IP addresses
 
 ## Example
-
-Tested on Windows 10 and on Ubuntu 20.04.4
-
-The IP address in the examples below is based off of the Mininet's generated IP addresses
 
 - To get started you will need 2 terminals open(we're assuming a Bash terminal)
 - To run the server
@@ -50,9 +54,3 @@ The IP address in the examples below is based off of the Mininet's generated IP 
     - We should see file3.txt in ./src/tests/ and file2.txt should not be there
   - $FTPClient --ip "10.0.0.1" -- port 12000 bye
     - We should see an ACK from the server and the server will exit
-
-## Note(s)
-
-- If you wish, you may enter your IP address and port number in lines 11-12 of ftp_server.py and lines 12-13 of ftp_client_cli.py. This will avoid the need to add the arguments --ip and --port
-
-- You may test this with Minine, where a host of choice can run the server script, while another host can make requests to the server.
